@@ -1,0 +1,172 @@
+version: '2'
+
+services:
+  front-end:
+    container_name: front-end
+    image: weaveworksdemos/front-end:0.3.12
+    hostname: front-end
+    restart: always
+    cap_drop:
+      - all
+    read_only: true
+  edge-router:
+    container_name: edge-router
+    image: weaveworksdemos/edge-router:0.1.1
+    ports:
+      - '20080:80'
+      - '28080:8080'
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    read_only: true
+    tmpfs:
+      - /var/run:rw,noexec,nosuid
+    hostname: edge-router
+    restart: always
+  catalogue:
+    container_name: catalogue
+    image: weaveworksdemos/catalogue:0.3.5
+    hostname: catalogue
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+  catalogue-db:
+    container_name: catalogue-db
+    image: weaveworksdemos/catalogue-db:0.3.0
+    hostname: catalogue-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_DATABASE=socksdb
+  carts:
+    privileged: true
+    container_name: carts
+    image: carts:v1
+    hostname: carts
+    restart: always
+    cap_add:
+      - NET_BIND_SERVICE
+      - NET_ADMIN
+  carts-db:
+    container_name: carts-db
+    image: mongo:3.4
+    hostname: carts-db
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+  orders:
+    privileged: true
+    container_name: orders
+    image: orders:v1
+    hostname: orders
+    restart: always
+    cap_add:
+      - NET_BIND_SERVICE
+      - NET_ADMIN
+  orders-db:
+    container_name: orders-db
+    image: mongo:3.4
+    hostname: orders-db
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+  shipping:
+    privileged: true
+    container_name: shipping
+    image: shipping:v1
+    hostname: shipping
+    restart: always
+    cap_add:
+      - NET_BIND_SERVICE
+      - NET_ADMIN
+  queue-master:
+    privileged: true
+    container_name: queue-master
+    image: queue-master:v1
+    hostname: queue-master
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    cap_add:
+      - NET_BIND_SERVICE
+      - NET_ADMIN
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.6.8
+    hostname: rabbitmq
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    read_only: true
+  payment:
+    container_name: payment
+    image: weaveworksdemos/payment:0.4.3
+    hostname: payment
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+  user:
+    container_name: user
+    image: weaveworksdemos/user:0.4.4
+    hostname: user
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - NET_BIND_SERVICE
+    read_only: true
+    environment:
+      - MONGO_HOST=user-db:27017
+  user-db:
+    container_name: user-db
+    image: weaveworksdemos/user-db:0.4.0
+    hostname: user-db
+    restart: always
+    cap_drop:
+      - all
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid
+  user-sim:
+    container_name: user-sim
+    image: weaveworksdemos/load-test:0.1.1
+    cap_drop:
+      - all
+    read_only: true
+    hostname: user-simulator
+    command: "-d 60 -r 200 -c 2 -h edge-router"

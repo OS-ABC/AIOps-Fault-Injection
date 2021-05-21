@@ -1,0 +1,36 @@
+version: '3'
+services:
+  hadoop-master:
+    hostname: hadoop-master
+    container_name: hadoop-master
+    image: "skyhadoop:v1"
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:9870:9870"
+    volumes:
+      - /var/log/hadoop/master:/usr/local/hadoop/logs
+    tty: true
+  hadoop-slave1:
+    hostname: hadoop-slave1
+    container_name: hadoop-slave1
+    image: "skyhadoop:v1"
+    volumes:
+      - /var/log/hadoop/slave1:/usr/local/hadoop/logs
+    cap_add:
+      - NET_ADMIN
+    tty: true
+  hadoop-slave2:
+    hostname: hadoop-slave2
+    container_name: hadoop-slave2
+    image: "skyhadoop:v1"
+    volumes:
+      - /var/log/hadoop/slave2:/usr/local/hadoop/logs
+    cap_add:
+      - NET_ADMIN
+    tty: true
+networks:
+  default:
+    external:
+      name: hadoop
