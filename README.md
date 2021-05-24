@@ -1,3 +1,8 @@
+---
+typora-root-url: docs\images
+typora-copy-images-to: docs\images
+---
+
 # AIOps-Fault-Injection
 
 
@@ -11,7 +16,7 @@
 
 整体工作流程图如下
 
-![示意图](C:\Users\18305\Desktop\答辩\其他图\示意图.png)
+![](/示意图.png)
 
 
 
@@ -33,7 +38,7 @@
 4. 直接在IDE中运行或maven打包后运行工具代码
 5. 向localhost:<配置端口>/test发送POST请求，请求数据的示例和主要字段含义如下所示。
 
-![sample-json](C:\Users\18305\Desktop\sample-json.png)
+![sample-json](/sample-json.png)
 
 | **关键字段名**             | **字段含义**                               | 支持类型             |
 | -------------------------- | ------------------------------------------ | :------------------- |
