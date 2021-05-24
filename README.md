@@ -1,6 +1,5 @@
 ---
-typora-root-url: docs\images
-typora-copy-images-to: docs\images
+
 ---
 
 # AIOps-Fault-Injection
@@ -16,7 +15,7 @@ typora-copy-images-to: docs\images
 
 整体工作流程图如下
 
-![](/示意图.png)
+![](./docs/images/示意图.png)
 
 
 
@@ -38,7 +37,7 @@ typora-copy-images-to: docs\images
 4. 直接在IDE中运行或maven打包后运行工具代码
 5. 向localhost:<配置端口>/test发送POST请求，请求数据的示例和主要字段含义如下所示。
 
-![sample-json](/sample-json.png)
+![sample-json](./docs/images/sample-json.png)
 
 | **关键字段名**             | **字段含义**                               | 支持类型             |
 | -------------------------- | ------------------------------------------ | :------------------- |
